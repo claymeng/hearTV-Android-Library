@@ -159,3 +159,31 @@ startService(intent);
 bindService(intent, hearTVserviceConnection, Context.BIND_AUTO_CREATE);
 ```
 
+#### Playback
+**`public void startPlayingSource(String sourceName)`**  
+Begins playback of the given source.  The value of `sourceName` must match a value retrieved when the `HTVIntentSourceListChanged` intent occurred.
+
+**`public void startPlayingMostRecentSource()`**  
+Begins playback of the source that was most recently played.  If no source has been played yet, the first available source will be played.
+
+**`public void startPlayingNextSource()`**  
+During playback, this function begins playback of the next source source in the list.  This function does not start playback when playback is stopped.
+
+**`public void startPlayingPreviousSource()`**  
+During playback, this function begins playback of the previous source source in the list.  This function does not start playback when playback is stopped.
+
+**`public void playPause()`**  
+If called during playback, this function stops playback.  If called when playback is stopped, this functions starts the most recent source.
+
+**`public void stopPlaying()`**  
+Stop playback.
+
+#### Source Information
+**`public String[] getSourceList(boolean includeHiddenSources)`**
+Returns the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.  Use `true` only when displaying a list for the user to choose which source's settings configuration panel to display.
+
+**`public String getCurrentSourceName();`**  
+Returns the name of the source currently played.  If playback is stopped, this function returns `null`.
+
+**`public native String getSettingsURL(String sourceName)`**  
+Returns the URL that can be used to access the source's configuration panel.
