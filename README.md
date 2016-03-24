@@ -10,7 +10,7 @@
 
 #### Service Connection
 The hearTV library consists of a [Bound Service](http://developer.android.com/guide/components/bound-services.html) called `hearTVservice`.  To use the service, implement a `ServiceConnection` to monitor the connection with the service and to save a reference to the service.  
-```
+```Java
     private hearTVservice mHearTVservice;
 
     private ServiceConnection hearTVserviceConnection = new ServiceConnection() {
@@ -49,8 +49,9 @@ Use `public HTVPlaybackStatus getCurrentPlaybackStatus()` to get the current sta
 You may optionally register a receiver for this intent to display a dynamic volume meter to the user.  This notification occurs several times per second.  To retrieve the volume, get the `float` intent extra `HTVIntentExtraVolume`.  For example: `float volume = intent.getFloatExtra(hearTVservice.HTVIntentExtraVolume, 0);`.
 
 ##### Example
+
 **Register broadcast receivers:**
-```
+```Java
     private void registerReceivers() {
         registerReceiver(willStartSearchingForSources, hearTVservice.HTVIntentWillStartSearchingForSources);
         registerReceiver(didStopSearchingForSources  , hearTVservice.HTVIntentDidStopSearchingForSources);
@@ -66,7 +67,7 @@ You may optionally register a receiver for this intent to display a dynamic volu
 ```
 
 **Broadcast Receiver for `HTVIntentWillStartSearchingForSources`**
-```
+```Java
     private BroadcastReceiver willStartSearchingForSources = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -76,7 +77,7 @@ You may optionally register a receiver for this intent to display a dynamic volu
 ```
 
 **Broadcast Receiver for `HTVIntentDidStopSearchingForSources`**
-```
+```Java
     private BroadcastReceiver didStopSearchingForSources = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -86,7 +87,7 @@ You may optionally register a receiver for this intent to display a dynamic volu
 ```
 
 **Broadcast Receiver for `HTVIntentSourceListChanged`**
-```
+```Java
     private BroadcastReceiver sourceListChanged = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -97,7 +98,7 @@ You may optionally register a receiver for this intent to display a dynamic volu
 ```
 
 **Broadcast Receiver for `HTVIntentNoSourcesFound`**
-```
+```Java
     private BroadcastReceiver noSourcesFound = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -109,7 +110,7 @@ You may optionally register a receiver for this intent to display a dynamic volu
 ```
 
 **Broadcast Receiver for `HTVIntentPlaybackStatusChanged`**
-```
+```Java
     private BroadcastReceiver playbackStatusChanged = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -132,7 +133,7 @@ You may optionally register a receiver for this intent to display a dynamic volu
 ```
 
 **Broadcast Receiver for `HTVIntentUpdateVolumeMeter`**
-```
+```Java
     private BroadcastReceiver updateVolume = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
