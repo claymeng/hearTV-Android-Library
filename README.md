@@ -1,6 +1,7 @@
 # hearTV Android Library
 
-## See the Android Studio project in the **Example** directory.
+## Example
+See the Android Studio project in the **Example** directory.
 
 ## Installation
 *todo*
@@ -38,7 +39,11 @@ progressDialog = ProgressDialog.show(this, "", "Finding hearTV Sources", true, f
 ```
 
 **`HTVIntentDidStopSearchingForSources`**  
-This intent is broadcast when the service is done searching for sources.  Use this intent to update the UI.  For example: `progressDialog.dismiss();`.
+This intent is broadcast when the service is done searching for sources.  Use this intent to update the UI.  For example:
+
+```Java
+progressDialog.dismiss();
+```
 
 **`HTVIntentSourceListChanged`**  
 Use `public String[] getSourceList(boolean includeHiddenSources)` to retrieve the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.
