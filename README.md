@@ -190,5 +190,5 @@ Returns the currently available audio sources.  Normally, `includeHiddenSources`
 **`public String getCurrentSourceName();`**  
 Returns the name of the source currently played.  If playback is stopped, this function returns `null`.
 
-**`public native String getSettingsURL(String sourceName)`**  
+**`public String getSettingsURL(String sourceName)`**  
 Returns the URL that can be used to access the source's configuration panel.
