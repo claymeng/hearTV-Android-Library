@@ -1,11 +1,38 @@
 # hearTV Android Library
 
 ## Example
-See the Android Studio project in the **Example** directory.
-
-## Installation
 *todo*
 
+## Installation
+###### Add Service
+1. Open your app project in Android Studio.
+2. Choose **File** > **New** > **New Module...**.
+3. Select **Import .JAR/.AAR Package**, then click **Next**.
+4. Click the "**...**" button next to the **File name** field.
+5. Navigate to and choose the **hearTVservice.aar** file, then click **OK**.
+6. Click **Finish**.
+
+###### Update build.gradle
+1. The hearTV Service requires Android SDK version 16 or higher.  In your project's **build.gradle** file, ensure that `minSdkVersion` is at least 16. 
+2. In your app's **build.gradle** file, add the following within the `dependencies` section:
+```
+compile project(':hearTVservice')
+```
+3. Android Studio will show a notification indicating that the Gradle files have changed.  In this notification, click **Sync Now**.
+
+###### Update AndroidManifest.xml
+1. In your project's **AndroidManifest.xml** file, add the following within the `<application>` section:   
+```
+<service
+    android:name="com.hearTVservice.hearTVservice"
+    android:enabled="true"></service>
+```
+
+###### Import
+1. In the Activity that will be using hearTV, add the following import statement:
+```
+import com.hearTVservice.hearTVservice;
+```
 
 ## Usage
 
