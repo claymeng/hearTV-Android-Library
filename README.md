@@ -18,7 +18,7 @@
 ```
 compile project(':hearTVservice')
 ```
-3. Android Studio will show a notification indicating that the Gradle files have changed.  In this notification, click **Sync Now**.
+* Android Studio will show a notification indicating that the Gradle files have changed.  In this notification, click **Sync Now**.
 
 ###### Update AndroidManifest.xml
 1. In your project's **AndroidManifest.xml** file, add the following within the `<application>` section:   
