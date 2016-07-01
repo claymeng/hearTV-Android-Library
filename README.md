@@ -81,13 +81,6 @@ When this intent is broadcast, display a message to the user.  The contents of t
 **`HTVIntentPlaybackStatusChanged`**  
 Use `public HTVPlaybackStatus getCurrentPlaybackStatus()` to get the current status in an `HTVPlaybackStatus` object, which contains a `message` and `type`.
 
-**`HTVIntentUpdateVolumeMeter`**  
-You may optionally register a receiver for this intent to display a dynamic volume meter to the user.  This notification occurs several times per second.  To retrieve the volume, get the `float` intent extra `HTVIntentExtraVolume`.  This is a value from 0 to 1 representing the stream's volume  For example:
-
-```Java
-float volume = intent.getFloatExtra(hearTVservice.HTVIntentExtraVolume, 0);
-```
-
 ##### Example
 
 **Register broadcast receivers:**
@@ -98,7 +91,6 @@ private void registerReceivers() {
     registerReceiver(sourceListChanged           , hearTVservice.HTVIntentSourceListChanged);
     registerReceiver(noSourcesFound              , hearTVservice.HTVIntentNoSourcesFound);
     registerReceiver(playbackStatusChanged       , hearTVservice.HTVIntentPlaybackStatusChanged);
-    registerReceiver(updateVolume                , hearTVservice.HTVIntentUpdateVolumeMeter);
 }
 
 private void registerReceiver(BroadcastReceiver receiver, String intentString) {
@@ -168,17 +160,6 @@ private BroadcastReceiver playbackStatusChanged = new BroadcastReceiver() {
             // htvPlaybackStatusListening
             // htvPlaybackStatusStopping
         }
-    }
-};
-```
-
-**Broadcast Receiver for `HTVIntentUpdateVolumeMeter`:**
-```Java
-private BroadcastReceiver updateVolume = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        float volume = intent.getFloatExtra(hearTVservice.HTVIntentExtraVolume, 0);
-        // Update UI
     }
 };
 ```
