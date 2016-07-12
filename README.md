@@ -200,3 +200,12 @@ Returns the name of the source currently played.  If playback is stopped, this f
 
 **`public String getSettingsURL(String sourceName)`**  
 Returns the URL that can be used to access the source's configuration panel.
+
+**`public String getDeviceID(String sourceName)`**  
+Returns the unique device identifier for the given source.  The following example retrieves the deviceID for the first source in the current list of available sources.  
+```Java
+    String[] allSources = mHearTVservice.getSourceList(true);
+    String deviceID;
+    if (allSources.length > 0)
+        deviceID = mHearTVservice.getDeviceID(allSources[0]);
+```
