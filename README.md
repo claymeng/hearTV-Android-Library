@@ -73,7 +73,8 @@ progressDialog.dismiss();
 ```
 
 **`HTVIntentSourceListChanged`**  
-Use `public String[] getSourceList(boolean includeHiddenSources)` to retrieve the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.
+Use `public String[] getSourceList(boolean includeHiddenSources)` to retrieve the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.  
+This intent includes a boolean intent extra called `HTVIntentExtraSourceListWasReset` that indicates whether the source list was reset prior to this update.  
 
 **`HTVIntentNoSourcesFound`**  
 When this intent is broadcast, display a message to the user.  The contents of the message are defined by two string intent extras: `HTVIntentExtraMessage1` and `HTVIntentExtraMessage2`.
@@ -125,6 +126,9 @@ private BroadcastReceiver sourceListChanged = new BroadcastReceiver() {
     public void onReceive(Context context, Intent intent) {
         String[] sources = mHearTVservice.getSourceList(false);
         // Update the list of sources being displayed
+        
+        boolean listWasReset = intent.getBooleanExtra(hearTVservice.HTVIntentExtraSourceListWasReset, true);
+        // Optionally, do something else specific to your app if the source list was reset.
     }
 };
 ```
