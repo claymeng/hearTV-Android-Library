@@ -213,3 +213,7 @@ Returns the unique device identifier for the given source.  The following exampl
     if (allSources.length > 0)
         deviceID = mHearTVservice.getDeviceID(allSources[0]);
 ```
+
+#### Other
+**`public void setPlaybackNotificationActivity(Class activityClass)`**  
+Set the activity to be opened when the user taps the playback notification.  
