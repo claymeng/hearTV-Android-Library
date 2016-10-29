@@ -73,8 +73,7 @@ progressDialog.dismiss();
 ```
 
 **`HTVIntentSourceListChanged`**  
-Use `public String[] getSourceList(boolean includeHiddenSources)` to retrieve the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.  
-This intent includes a boolean intent extra called `HTVIntentExtraSourceListWasReset` that indicates whether the source list was reset prior to this update.  
+Use `getSourceNames()` to retrieve the currently available audio sources.  This intent includes a boolean intent extra called `HTVIntentExtraSourceListWasReset` that indicates whether the source list was reset prior to this update.  
 
 **`HTVIntentNoSourcesFound`**  
 When this intent is broadcast, display a message to the user.  The contents of the message are defined by two string intent extras: `HTVIntentExtraMessage1` and `HTVIntentExtraMessage2`.
@@ -156,13 +155,6 @@ private BroadcastReceiver playbackStatusChanged = new BroadcastReceiver() {
         switch (status.type) {
             // Update the UI depending on the various statuses.
             // For example, display or hide playback controls as needed.
-            // Possible values are:
-            //
-            // htvPlaybackStatusIdle
-            // htvPlaybackStatusConnecting
-            // htvPlaybackStatusConnectionFailed
-            // htvPlaybackStatusListening
-            // htvPlaybackStatusStopping
         }
     }
 };
@@ -195,25 +187,50 @@ If called during playback, this function stops playback.  If called when playbac
 **`public void stopPlaying()`**  
 Stop playback.
 
-#### Source Information
-**`public String[] getSourceList(boolean includeHiddenSources)`**
-Returns the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.  Use `true` only when displaying a list for the user to choose which source's settings configuration panel to display.
+**`public HTVPlaybackStatus getCurrentPlaybackStatus()`**
+Returns the current status in an `HTVPlaybackStatus` object, which contains the following properties:  
+
+| `HTVPlaybackStatus` Property | Description |
+|------------------------------|-------------|
+| `message`                    | `String` with a message that may be displayed to the user. |
+| `type`                       | One of the following `int` values:<br> `htvPlaybackStatusTypeIdle`<br>`htvPlaybackStatusTypeConnecting`<br>`htvPlaybackStatusTypeConnectionFailed`<br>`htvPlaybackStatusTypeListening`<br>`htvPlaybackStatusTypeStopping` |
+
+#### Source/Device Information
+A `Device` represents a hearTV device on the local network.  Each device may have one or more audio inputs, which are represented as unique source names.  Use the following functions to retrieve information about a `Device`:  
+
+| `Device` Property | Description |
+|----------------------|-------------|
+|`getName`             | `String` representing the name of the device. |
+|`getDeviceID`         | `String` representing the device's MAC address. |
+|`getSettingsURL`      | `String` that can be used to access the device's web-based configuration. |
+|`getSourceNames`      | Array of `String`s representing the device's audio sources. |
+
+Use the functions below to retrieve information about sources and devices available on the local network.  
+
+**`public String[] getSourceNames();`**  
+Returns an array of `String`s of the currently available audio sources.  
+
+**`public Device[] getDevices()`**  
+Returns an array of the currently available `Device`s.  
 
 **`public String getCurrentSourceName();`**  
-Returns the name of the source currently played.  If playback is stopped, this function returns `null`.
+Returns the name of the source currently playing.  If playback is stopped, this function returns `null`.  
+
+**`public String[] getSourceList(boolean includeHiddenSources)`**  
+***Deprecated: Use `getSourceNames()` or `getDevices()` instead.***  
+Returns the currently available audio sources.  Normally, `includeHiddenSources` should be `false`.  Use `true` only when displaying a list for the user to choose which source's settings configuration panel to display.
 
 **`public String getSettingsURL(String sourceName)`**  
+***Deprecated: Use `getDevices()` to obtain a list of devices and then use `getSettingsURL()` on the device instead.***  
 Returns the URL that can be used to access the source's configuration panel.
 
 **`public String getDeviceID(String sourceName)`**  
-Returns the unique device identifier for the given source.  The following example retrieves the deviceID for the first source in the current list of available sources.  
-```Java
-    String[] allSources = mHearTVservice.getSourceList(true);
-    String deviceID;
-    if (allSources.length > 0)
-        deviceID = mHearTVservice.getDeviceID(allSources[0]);
-```
+***Deprecated: Use `getDevices()` to obtain a list of devices and then use `getDeviceID()` on the device instead.***  
+Returns the unique device identifier for the given source.  
 
 #### Other
 **`public void setPlaybackNotificationActivity(Class activityClass)`**  
 Set the activity to be opened when the user taps the playback notification.  
+
+**`public native void setVolume(float volume)`**
+Set the playback volume of the audio stream.  Valid values are 0 to 1.  
