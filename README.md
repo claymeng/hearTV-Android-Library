@@ -55,6 +55,9 @@ private ServiceConnection hearTVserviceConnection = new ServiceConnection() {
     }
 };
 ```
+
+---
+
 #### Intents
 Before initializing the hearTV service, register receivers for the various intents broadcast by the service.
 
@@ -160,6 +163,8 @@ private BroadcastReceiver playbackStatusChanged = new BroadcastReceiver() {
 };
 ```
 
+---
+
 #### Initialization
 To initialize the library, start the service and then bind to it.  Ensure that this is called *after* registering broadcast receivers.
 ```Java
@@ -167,6 +172,8 @@ Intent intent = new Intent(getApplicationContext(), hearTVservice.class);
 startService(intent);
 bindService(intent, hearTVserviceConnection, Context.BIND_AUTO_CREATE);
 ```
+
+---
 
 #### Playback
 **`public void startPlayingSource(String sourceName)`**  
@@ -187,13 +194,15 @@ If called during playback, this function stops playback.  If called when playbac
 **`public void stopPlaying()`**  
 Stop playback.
 
-**`public HTVPlaybackStatus getCurrentPlaybackStatus()`**
+**`public HTVPlaybackStatus getCurrentPlaybackStatus()`**  
 Returns the current status in an `HTVPlaybackStatus` object, which contains the following properties:  
 
 | `HTVPlaybackStatus` Property | Description |
 |------------------------------|-------------|
 | `message`                    | `String` with a message that may be displayed to the user. |
 | `type`                       | One of the following `int` values:<br> `htvPlaybackStatusTypeIdle`<br>`htvPlaybackStatusTypeConnecting`<br>`htvPlaybackStatusTypeConnectionFailed`<br>`htvPlaybackStatusTypeListening`<br>`htvPlaybackStatusTypeStopping` |
+
+---
 
 #### Source/Device Information
 A `Device` represents a hearTV device on the local network.  Each device may have one or more audio inputs, which are represented as unique source names.  Use the following functions to retrieve information about a `Device`:  
@@ -231,6 +240,8 @@ Returns the URL that can be used to access the source's configuration panel.
 ***Deprecated: Use `getDevices()` to obtain a list of devices and then use `getDeviceID()` on the device instead.***  
 Returns the unique device identifier for the given source.  
 
+---
+
 #### Playback Notification Information
 Playback information shown in the Android notification drawer (logo, track name, etc.) can be customized by implementing the `NotificationDataSource` interface.  This interface has one function:
 
@@ -239,19 +250,21 @@ Implement this function to return a `PlaybackNotificationSettings` object with t
 
 ![Notification Options](readme-images/notification-options.png)
 
-| Setting   | Description |
-|-----------|-------------|
-| color     | The accent color to use for the notification.  (The purpose of the accent color may vary between different versions of Android.) |
-| smallIcon | The small icon resource, which will be shown in the Android device's status bar. |
-| largeIcon | The large icon to be shown in the notification. |
-| text      | A string to be displayed in the notification in place of "**hearTV**". |
-| title     | A string to be displayed in the notification in place of the current source name. |
+| Setting     | Description |
+|-------------|-------------|
+| `color`     | The accent color to use for the notification.  (The purpose of the accent color may vary between different versions of Android.) |
+| `smallIcon` | The small icon resource, which will be shown in the Android device's status bar. |
+| `largeIcon` | The large icon to be shown in the notification. |
+| `text`      | A string to be displayed in the notification in place of "**hearTV**". |
+| `title`     | A string to be displayed in the notification in place of the current source name. |
 
 **`public void setNotificationDataSource(NotificationDataSource notificationDataSource)`**  
 Set an object that implements the `NotificationDataSource` interface that will provide custom information for the playback notification.  
 
 **`public void setPlaybackNotificationActivity(Class activityClass)`**  
 Set the activity to be opened when the user taps the playback notification.  
+
+---
 
 #### Other
 **`public native void setVolume(float volume)`**
