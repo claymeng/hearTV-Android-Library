@@ -170,7 +170,7 @@ bindService(intent, hearTVserviceConnection, Context.BIND_AUTO_CREATE);
 
 #### Playback
 **`public void startPlayingSource(String sourceName)`**  
-Begins playback of the given source.  The value of `sourceName` must match a value retrieved when the `HTVIntentSourceListChanged` intent occurred.
+Begins playback of the given source.  The value of `sourceName` must match a value retrieved using `getSourceNames()`.  
 
 **`public void startPlayingMostRecentSource()`**  
 Begins playback of the source that was most recently played.  If no source has been played yet, the first available source will be played.
@@ -213,6 +213,9 @@ Returns an array of `String`s of the currently available audio sources.
 **`public Device[] getDevices()`**  
 Returns an array of the currently available `Device`s.  
 
+**`public Device getDeviceForSource(String sourceName)`**  
+Returns a `Device` for the given source name.  The value of `sourceName` must match a value retrieved using `getSourceNames()`.
+
 **`public String getCurrentSourceName();`**  
 Returns the name of the source currently playing.  If playback is stopped, this function returns `null`.  
 
@@ -228,9 +231,28 @@ Returns the URL that can be used to access the source's configuration panel.
 ***Deprecated: Use `getDevices()` to obtain a list of devices and then use `getDeviceID()` on the device instead.***  
 Returns the unique device identifier for the given source.  
 
-#### Other
+#### Playback Notification Information
+Playback information shown in the Android notification drawer (logo, track name, etc.) can be customized by implementing the `NotificationDataSource` interface.  This interface has one function:
+
+**`PlaybackNotificationSettings getPlaybackNotificationSettings(String sourceName, Device device)`**  
+Implement this function to return a `PlaybackNotificationSettings` object with the desired custom settings.  The following settings can be customized:
+
+![Notification Options](readme-images/notification-options.png)
+
+| Setting   | Description |
+|-----------|-------------|
+| color     | The accent color to use for the notification.  (The purpose of the accent color may vary between different versions of Android.) |
+| smallIcon | The small icon resource, which will be shown in the Android device's status bar. |
+| largeIcon | The large icon to be shown in the notification. |
+| text      | A string to be displayed in the notification in place of "**hearTV**". |
+| title     | A string to be displayed in the notification in place of the current source name. |
+
+**`public void setNotificationDataSource(NotificationDataSource notificationDataSource)`**  
+Set an object that implements the `NotificationDataSource` interface that will provide custom information for the playback notification.  
+
 **`public void setPlaybackNotificationActivity(Class activityClass)`**  
 Set the activity to be opened when the user taps the playback notification.  
 
+#### Other
 **`public native void setVolume(float volume)`**
 Set the playback volume of the audio stream.  Valid values are 0 to 1.  
