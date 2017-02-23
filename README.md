@@ -264,6 +264,9 @@ Set an object that implements the `NotificationDataSource` interface that will p
 **`public void setPlaybackNotificationActivity(Class activityClass)`**  
 Set the activity to be opened when the user taps the playback notification.  
 
+**`public void updatePlaybackNotification()`**  
+Call this function to force an update to the playback notification. (Normally, the hearTV Library updates the notification only when playback starts and stops, or when the user switches sources.)
+
 ---
 
 #### Other
