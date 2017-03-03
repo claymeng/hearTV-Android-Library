@@ -243,20 +243,23 @@ Returns the unique device identifier for the given source.
 ---
 
 #### Playback Notification Information
-Playback information shown in the Android notification drawer (logo, track name, etc.) can be customized by implementing the `NotificationDataSource` interface.  This interface has one function:
+##### Playback Notification Data Source
+Playback information shown in the Android notification drawer (logo, track name, etc.) can be customized by implementing the `NotificationDataSource` interface.  This interface has one function that must be implemented:
 
 **`PlaybackNotificationSettings getPlaybackNotificationSettings(String sourceName, Device device)`**  
 Implement this function to return a `PlaybackNotificationSettings` object with the desired custom settings.  The following settings can be customized:
 
 ![Notification Options](readme-images/notification-options.png)
 
-| Setting     | Description |
-|-------------|-------------|
-| `color`     | The accent color to use for the notification.  (The purpose of the accent color may vary between different versions of Android.) |
-| `smallIcon` | The small icon resource, which will be shown in the Android device's status bar. |
-| `largeIcon` | The large icon to be shown in the notification. |
-| `text`      | A string to be displayed in the notification in place of "**hearTV**". |
-| `title`     | A string to be displayed in the notification in place of the current source name. |
+| Setting     | Type                      | Description |
+|-------------|---------------------------|-------------|
+| `color`     | `android.graphics.Color`  | The accent color to use for the notification.  (The purpose of the accent color may vary between different versions of Android.) |
+| `smallIcon` | `int` (Resource ID)       | The small icon resource, which will be shown in the Android device's status bar. Because Android only reders this icon's alpha channel, the small icon should be a simple silhouette of the desired shape. |
+| `largeIcon` | `android.graphics.Bitmap` | Bitmap The large icon to be shown in the notification. |
+| `text`      | `String`                  | A string to be displayed in the notification in place of "**hearTV**". |
+| `title`     | `String`                  | A string to be displayed in the notification in place of the current source name. |
+
+##### Other Playback Notification Functions
 
 **`public void setNotificationDataSource(NotificationDataSource notificationDataSource)`**  
 Set an object that implements the `NotificationDataSource` interface that will provide custom information for the playback notification.  
@@ -266,6 +269,48 @@ Set the activity to be opened when the user taps the playback notification.
 
 **`public void updatePlaybackNotification()`**  
 Call this function to force an update to the playback notification. (Normally, the hearTV Library updates the notification only when playback starts and stops, or when the user switches sources.)
+
+##### Example
+          
+**Set notification activity and data source:**
+```Java
+private hearTVservice mHearTVservice;
+
+private ServiceConnection hearTVserviceConnection = new ServiceConnection() {
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+
+        /*
+        Establish connection to the hearTVservice.
+        */
+
+        mHearTVservice.setPlaybackNotificationActivity(myActivity.class);
+        mHearTVservice.setNotificationDataSource(myActivity.this);
+    }
+};
+```
+
+**Define custom notification values:**
+```Java
+@Override
+public hearTVservice.PlaybackNotificationSettings getPlaybackNotificationSettings(String s, Device device) {
+
+    hearTVservice.PlaybackNotificationSettings settings = new hearTVservice.PlaybackNotificationSettings();
+    settings.color = Color.parseColor("#FF00FF");
+    settings.smallIcon = R.drawable.mySmallIcon;
+    settings.largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.myLargeIcon);
+    settings.text = "My App";
+
+    // Instead of the source name, show the device's ID (the MAC address):
+    String currentSourceName = mHearTVservice.getCurrentSourceName();
+    Device currentDevice = mHearTVservice.getDeviceForSource(currentSourceName);
+    if (currentDevice != null)
+        settings.title = currentDevice.getDeviceID();
+
+    return settings;
+}
+```
 
 ---
 
